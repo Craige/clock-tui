@@ -19,9 +19,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Setup terminal
     enable_raw_mode()?;
-    let mut stdout = io::stdout();
-    stdout.execute(EnterAlternateScreen)?;
-    let backend = CrosstermBackend::new(&mut stdout);
+    let mut stderr = io::stderr();
+    stderr.execute(EnterAlternateScreen)?;
+    let backend = CrosstermBackend::new(&mut stderr);
     let mut terminal = Terminal::new(backend)?;
 
     // Load config and initialize app
@@ -64,7 +64,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     terminal.show_cursor()?;
     drop(terminal);
     disable_raw_mode()?;
-    stdout.execute(LeaveAlternateScreen)?;
+    stderr.execute(LeaveAlternateScreen)?;
 
     // Perform logic such as printing the stopwatch time.
     // Must be done after leaving alternate screen.
